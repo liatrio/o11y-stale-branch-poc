@@ -23,7 +23,14 @@ inputs:
       deletion issue before actually deleting the branch. Default is "7 days".
     required: true
     default: 7 days
-
+  
+  ignored-branches:
+    description: |
+      A comma-separated list of branch names that should be ignored and not pruned.
+      Default is "main,master".
+    required: false
+    default: main,master
+    
 runs:
   using: node20
   main: dist/index.js

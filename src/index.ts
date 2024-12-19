@@ -44,16 +44,17 @@ function getActionsInput(): ActionsInput {
   const token = core.getInput('github-token')
   const branchCutoffDate = getInputAsDate('stale-branch-age', 'past')
   const issueCutoffDate = getInputAsDate('stale-branch-issue-age', 'past')
+  const ignoredBranches = core.getInput('ignored-branches').split(',').map(branch => branch.trim())
 
-  return { branchCutoffDate, issueCutoffDate, token }
+  return { branchCutoffDate, issueCutoffDate, token, ignoredBranches }
 }
 
 async function run() {
-  const { branchCutoffDate, issueCutoffDate, token } = getActionsInput()
+  const { branchCutoffDate, issueCutoffDate, token, ignoredBranches } = getActionsInput()
 
   const gh = new GitHubUtil(token)
 
-  const flaggedBranches = await gh.getFlaggedBranches(branchCutoffDate)
+  const flaggedBranches = await gh.getFlaggedBranches(branchCutoffDate, ignoredBranches)
 
   core.debug(`Found ${flaggedBranches.length || 0} branches that are flagged for deletion.`)
 

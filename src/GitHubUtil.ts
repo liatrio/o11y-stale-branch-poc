@@ -215,7 +215,7 @@ export class GitHubUtil {
    *
    * @returns An array of branches that have been flagged for deletion.
    */
-  public async getFlaggedBranches(cutoffDate: Dayjs) {
+  public async getFlaggedBranches(cutoffDate: Dayjs, ignoredBranches: string[]) {
     const flaggedBranches: FlaggedBranch[] = []
 
     try {
@@ -248,6 +248,13 @@ export class GitHubUtil {
             logger.info(`Skipping default branch: ${branch.name}`, 'GitHubUtil#getFlaggedBranches')
 
             continue
+          }
+
+          // Verify the branch is not in the ignored branches list.
+          if (ignoredBranches.includes(branch.name)) {
+          logger.info(`Skipping ignored branch: ${branch.name}`, 'GitHubUtil#getFlaggedBranches')
+
+          continue
           }
 
           const lastCommitDate = Day(commit.commit.committer?.date)

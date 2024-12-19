@@ -23,6 +23,9 @@ export type ActionsInput = {
 
   /** The personal access token used for authenticating with the GitHub API. */
   token: string
+
+  /** The branches not to prune. */
+  ignoredBranches: string[]
 }
 
 /** An object containing the relevant data for a branch and its last commit. */
