@@ -1,0 +1,19 @@
+name: Test Prune Stale Branches Action
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Prune Stale Branches Action
+        uses: ./  # Use the local action
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-branch-age: 30 days
+          stale-branch-issue-age: 90 days
+          ignored-branches: main,feat/default-ignore
